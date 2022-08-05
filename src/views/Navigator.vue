@@ -11,7 +11,7 @@
 </script>
 <template>
     <div id="nav">
-        <router-link id="logo" to="/">Traveling</router-link>
+        <router-link class="not-active" id="logo" to="/">Traveling</router-link>
         <router-link v-for="destination in destionations" :to="{name: 'Destination', params: {id: destination.id, slug:destination.slug}}" :key="destination.id">
             {{destination.name}}
         </router-link>
@@ -20,5 +20,8 @@
 <style>
     .active-link{
         border-bottom: 3px solid white;
+    }
+    .not-active{
+        border: none !important;
     }
 </style>
