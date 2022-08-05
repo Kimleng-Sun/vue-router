@@ -1,12 +1,13 @@
 <script>
     import data from '@/data.json';
+    import ExperienceCard from '@/components/ExpereincedCard.vue'
    
     export default {
-        // data() {
-        //     return {
-        //         destination: '',
-        //     }
-        // },  
+        data() {
+            return {
+                destination: '',
+            }
+        },  
         // methods: {
         //     getDestination(){
         //         this.destination = data.destinations.find(destination=>destination.id === parseInt(this.$route.params.id))
@@ -19,20 +20,53 @@
             destinationId(){
                 return parseInt(this.$route.params.id)
             },
-            destination(){
-                return data.destinations.find(destination=>destination.id === this.destinationId)
+            // destinations(){
+            //     return data.destinations.find(destination=>destination.id === this.destinationId)
+            // }
+        },
+        methods: {
+            async fetchData(){
+            this.destination=''
+            const response = await fetch(`https://travel-dummy-api.netlify.app/${this.$route.params.slug}`)
+            this.destination = await response.json()
+         
             }
+        },
+
+        created(){
+           this.fetchData()
+        },
+        watch: {
+            destinationId(){
+                this.fetchData()
+            }
+        },
+
+        components: {
+            ExperienceCard
         }
     }
 </script>
 <template>
-    <section class="destination">
+    <section v-if="destination" class="destination">
         <h1>{{destination.name}}</h1>
         <div class="destination-details" >
             <img :src="`/images/${destination.image}`" :alt="destination.name">
             <p>{{destination.description}}</p>
         </div>
-    </section> 
+    </section>
+    <p v-else>Loading.....</p>
+    <section class="experiences">
+        <h2>Top experienced in {{destination.name}}</h2>
+    <div class="cards">
+        <router-link v-for="experience in destination.experiences" :key="destination.slug"
+            :to="{name: 'Experience'  , params: {experienceSlug: experience.slug}}"
+        >
+            <ExperienceCard :experience="experience"/>
+        </router-link>
+        
+    </div>
+    </section>
 </template>
 
 <style>

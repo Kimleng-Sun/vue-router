@@ -1,6 +1,6 @@
 <script>
     import data from "@/data.json"
-    console.log(data.destinations)
+
     export default{
         data() {
             return {
