@@ -15,6 +15,7 @@
         <router-link v-for="destination in destionations" :to="{name: 'Destination', params: {id: destination.id, slug:destination.slug}}" :key="destination.id">
             {{destination.name}}
         </router-link>
+        <router-link :to="{name: 'Protected'}">Dashboard</router-link>
     </div>
 </template>
 <style>
